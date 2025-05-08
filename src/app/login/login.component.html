@@ -1,0 +1,16 @@
+<div class="login-container">
+    <h2>Administrator Login</h2>
+    <form>
+        <mat-form-field appearance="fill" class="form-group">
+            <mat-label>Username</mat-label>
+            <input matInput id="username" placeholder="Username">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="form-group">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" id="password" placeholder="Password">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="login()" class="full-width-button">Login</button>
+    </form>
+</div>
