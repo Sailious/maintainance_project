@@ -1,9 +1,123 @@
-<div class="container">
-    <h2>User Management System</h2>
-    <div class="content">
-        <!-- 这里可以添加用户管理的内容 -->
-        <p>Welcome back, Administrator</p>
-        <p>This is the user management page. It is not currently connected to the API.</p>
+<div class="user-management-container">
+  <div class="header-section">
+    <h2>User Management</h2>
+
+    <!-- 退出按钮 -->
+    <div class="logout-section">
+      <button class="logout-button" (click)="onLogout()">Logout</button>
     </div>
-    <button mat-flat-button color="primary" (click)="logout()">logout</button>
+  </div>
+
+  <!-- 搜索栏 -->
+  <div class="search-container">
+    <select [(ngModel)]="searchType">
+      <option value="keyword">Keyword Search</option>
+      <option value="id">ID Search</option>
+    </select>
+
+    <input
+      type="text"
+      [(ngModel)]="searchKeyword"
+      [placeholder]="searchType === 'id' ? 'Enter User ID...' : 'Search by username/email...'"
+    >
+    <button (click)="onSearch()">Search</button>
+  </div>
+
+  <!-- 用户表格 -->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <button (click)="onEdit(user.id)">Edit</button>
+        <button (click)="onDelete(user.id)">Delete</button>
+      </td>
+    </tr>
+    <tr *ngIf="users.length === 0">
+      <td colspan="4" style="text-align: center">No users found</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 分页 (仅显示在关键词搜索模式) -->
+  <div class="pagination" *ngIf="searchType === 'keyword'">
+    <button
+      (click)="previousPage()"
+      [disabled]="currentPage === 1"
+    >Previous</button>
+
+    <span>{{ currentPage }} / {{ totalPages }}</span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >Next</button>
+  </div>
+
+  <!-- 编辑用户表单遮罩 -->
+  <div
+    class="edit-user-form-backdrop"
+    *ngIf="showEditForm"
+    (click)="closeEditForm()"
+  ></div>
+
+  <!-- 编辑用户表单 -->
+  <div class="edit-user-form" *ngIf="showEditForm">
+    <h3>Edit User</h3>
+    <form (ngSubmit)="onUpdateUser(editedUser.id)">
+      <div class="form-group">
+        <label>ID</label>
+        <input
+          type="text"
+          [(ngModel)]="editedUser.id"
+          name="id"
+          disabled
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Username</label>
+        <input
+          type="text"
+          [(ngModel)]="editedUser.username"
+          name="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          [(ngModel)]="editedUser.email"
+          name="email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label>Password (leave blank to keep unchanged)</label>
+        <input
+          type="password"
+          [(ngModel)]="editedUser.password"
+          name="password"
+        >
+      </div>
+
+      <div class="form-actions">
+        <button type="submit">Update User</button>
+        <button type="button" (click)="closeEditForm()">Cancel</button>
+      </div>
+    </form>
+  </div>
 </div>
