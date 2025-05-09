@@ -1,16 +1,19 @@
 <div class="login-container">
-    <h2>Administrator Login</h2>
-    <form>
-        <mat-form-field appearance="fill" class="form-group">
-            <mat-label>Username</mat-label>
-            <input matInput id="username" placeholder="Username">
-        </mat-form-field>
+  <h2>Administrator Login</h2>
+  <form (ngSubmit)="onLogin()">
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Email</mat-label>
+      <input matInput id="email" placeholder="Email" [(ngModel)]="email" name="email" required>
+    </mat-form-field>
 
-        <mat-form-field appearance="fill" class="form-group">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" id="password" placeholder="Password">
-        </mat-form-field>
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+    </mat-form-field>
 
-        <button mat-flat-button color="primary" (click)="login()" class="full-width-button">Login</button>
-    </form>
+    <button type="submit" mat-flat-button color="primary" class="full-width-button">Login</button>
+  </form>
+
+  <!-- 添加注册按钮 -->
+  <button mat-flat-button color="accent" class="full-width-button" (click)="navigateToRegister()">Register</button>
 </div>
