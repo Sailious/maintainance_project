@@ -1,6 +1,9 @@
+// register.component.ts
 import { Component } from '@angular/core';
 import { RegisterService } from '../services/register.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { RegisterSuccessDialogComponent } from '../components/register-success-dialog/register-success-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -12,17 +15,28 @@ export class RegisterComponent {
   email = '';
   password = '';
 
-  constructor(private registerService: RegisterService, private router: Router) { }
+  constructor(
+    private registerService: RegisterService,
+    private router: Router,
+    private dialog: MatDialog
+  ) { }
 
   onRegister() {
     if (this.username && this.email && this.password) {
-      this.registerService.register(this.username, this.email, this.password).subscribe(
-        (response: any) => {
-          console.log('Registration successful:', response);
-          alert(`Registration successful, welcome to the app, ${this.username}`);
-          this.router.navigate(['/login']); // 注册成功后跳转到登录页面
+      this.registerService.register(this.username, this.email, this.password).subscribe({
+        next: (response) => {
+          const dialogRef = this.dialog.open(RegisterSuccessDialogComponent, {
+            width: '400px',
+            data: { username: this.username },
+            disableClose: true
+          });
+
+          dialogRef.afterClosed().subscribe(() => {
+            this.router.navigate(['/login']);
+          });
         },
-        (error: any) => {
+        error: (error) => {//TODO: 把alert改成弹窗
+          // 保持原有错误处理
           console.error('Registration failed:', error);
           if (error.status === 400) {
             alert('Username or email already exists');
@@ -32,13 +46,12 @@ export class RegisterComponent {
             alert('Registration failed');
           }
         }
-      );
+      });
     } else {
       alert('Please fill in all fields');
     }
   }
 
-  // 添加导航到登录页面的方法
   navigateToLogin() {
     this.router.navigate(['/login']);
   }

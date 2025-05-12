@@ -1,14 +1,12 @@
 <div class="app-container">
-  <header>
-    <h1>User Management System</h1>
-  </header>
+  <!-- 修改后的 header 部分 -->
+  <mat-toolbar color="primary" class="dashboard-header">
+    <div class="header-content">
+      <span class="title-text">Guitar Hero!!</span>
+      <div class="header-decoration"></div>
+    </div>
+  </mat-toolbar>
   <main>
-
-    <nav>
-      <button routerLink="/users">Users Management</button>
-      <button routerLink="/posts">Posts Management</button>
-    </nav>
-
     <router-outlet></router-outlet>
     <router-outlet></router-outlet>
   </main>

@@ -1,76 +1,71 @@
-/* user-management.component.css */
+/* ================= user-management.component.css ================= */
+/* 基础容器 */
 .management-container {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 24px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* 工具栏 */
 .header-toolbar {
+  border-radius: 12px;
   margin-bottom: 24px;
-  border-radius: 8px;
-
-  .nav-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 16px;
-  }
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
+.nav-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+/* 按钮组 */
 .title-button-group {
   display: flex;
   gap: 16px;
-
-  button {
-    padding: 0 20px;
-    border-radius: 24px;
-  }
 }
 
-.search-container {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 32px;
-
-  .search-field {
-    flex: 1;
-  }
-
-  .search-button {
-    min-width: 120px;
-  }
+.title-button-group button {
+  padding: 0 20px;
+  border-radius: 24px;
 }
 
-.table-wrapper {
-  border-radius: 8px;
+/* 表格系统 */
+.table-container {
+  border-radius: 12px;
   overflow: hidden;
+  background: #fff;
   box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),
   0 8px 10px 1px rgba(0,0,0,.14),
   0 3px 14px 2px rgba(0,0,0,.12);
 }
 
-.no-data-row {
-  td {
-    padding: 40px 0 !important;
-    text-align: center;
-
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      color: rgba(0,0,0,.54);
-
-      mat-icon {
-        font-size: 48px;
-        width: 48px;
-        height: 48px;
-      }
-    }
-  }
+/* 空状态 */
+.empty-row  td {
+  padding: 40px 0 !important;
+  text-align: center;
 }
 
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(0,0,0,.54);
+}
+
+.empty-state mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}
+
+/* 弹窗系统 */
 .edit-dialog {
   position: fixed;
   top: 0;
@@ -81,34 +76,62 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
-
-  .dialog-overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-  }
-
-  .dialog-content {
-    position: relative;
-    width: 500px;
-    max-width: 90%;
-    z-index: 1001;
-
-    mat-form-field {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-  }
 }
 
+.dialog-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.dialog-content {
+  position: relative;
+  width: 800px;
+  max-width: 90%;
+  z-index: 1001;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+}
+
+/* 操作按钮容器 */
 .dialog-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 8px;
+  justify-content: flex-end; /* 确保从右向左排列 */
+  width: 100%; /* 关键属性 */
 }
 
+/* 调整按钮顺序 */
+.dialog-actions button:first-child {
+  order: 2; /* Cancel按钮显示在右边 */
+}
+
+.dialog-actions button:last-child {
+  order: 1; /* Update按钮显示在左边 */
+}
+
+/* 悬停效果增强 */
+.dialog-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .dialog-actions {
+    flex-direction: column;
+  }
+
+  .dialog-actions button {
+    width: 100%;
+    order: initial !important; /* 移动端恢复默认顺序 */
+  }
+}
+
+/* 响应式适配 */
 @media (max-width: 768px) {
   .management-container {
     padding: 16px;
@@ -117,26 +140,15 @@
   .nav-group {
     flex-direction: column;
     gap: 12px;
-
-    .title-button-group {
-      flex-direction: column;
-      width: 100%;
-
-      button {
-        width: 100%;
-      }
-    }
-
-    .logout-button {
-      width: 100%;
-    }
+    padding: 12px 0;
   }
 
-  .search-container {
+  .title-button-group {
+    width: 100%;
     flex-direction: column;
+  }
 
-    mat-form-field, button {
-      width: 100%;
-    }
+  .title-button-group button {
+    width: 100%;
   }
 }

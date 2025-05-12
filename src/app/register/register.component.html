@@ -1,29 +1,30 @@
+<!-- register.component.html -->
 <div class="register-container">
-  <h2>Administrator Registration</h2>
-  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+  <h2>Create New Account</h2>
+  <form (ngSubmit)="onRegister()">
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Username</mat-label>
-      <input matInput id="username" placeholder="Username" [(ngModel)]="username" name="username" required>
-      <mat-error *ngIf="!username">Username is required</mat-error>
+      <input matInput [(ngModel)]="username" name="username" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Email</mat-label>
-      <input matInput id="email" placeholder="Email" [(ngModel)]="email" name="email" required email>
-      <mat-error *ngIf="!email">Email is required</mat-error>
-      <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">Invalid email format</mat-error>
+      <input matInput type="email" [(ngModel)]="email" name="email" required>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Password</mat-label>
-      <input matInput type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password" required minlength="6">
-      <mat-error *ngIf="!password">Password is required</mat-error>
-      <mat-error *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">Password must be at least 6 characters long</mat-error>
+      <input matInput type="password" [(ngModel)]="password" name="password" required>
     </mat-form-field>
 
-    <button type="submit" mat-flat-button color="primary" class="full-width-button" [disabled]="!registerForm.valid">Register</button>
+    <button type="submit" mat-flat-button color="primary" class="full-width-button">
+      Register
+    </button>
   </form>
 
-  <!-- 添加跳转到登录页面的按钮 -->
-  <button mat-flat-button color="accent" class="full-width-button" (click)="navigateToLogin()">Back to Login</button>
+  <button mat-flat-button color="accent"
+          class="full-width-button"
+          (click)="navigateToLogin()">
+    Back to Login
+  </button>
 </div>

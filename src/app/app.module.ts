@@ -20,6 +20,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 
+
 // 应用模块和组件
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +31,8 @@ import { PostManagementComponent } from './post-management/post-management.compo
 import { TruncatePipe } from './pipe/truncate.pipe';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthInterceptor } from './auth.interceptor';
+import { LoginSuccessDialogComponent } from './components/login-success-dialog/login-success-dialog.component';
+import { RegisterSuccessDialogComponent } from './components/register-success-dialog/register-success-dialog.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,9 @@ import { AuthInterceptor } from './auth.interceptor';
     UserManagementComponent,
     RegisterComponent,
     PostManagementComponent,
-    TruncatePipe
+    TruncatePipe,
+    LoginSuccessDialogComponent,
+    RegisterSuccessDialogComponent
   ],
   imports: [
     // Angular 核心模块
@@ -62,6 +67,8 @@ import { AuthInterceptor } from './auth.interceptor';
     MatTableModule,
     MatTabsModule,
     MatToolbarModule,
+    MatDialogModule,
+    MatIconModule,
 
     // 应用路由模块
     AppRoutingModule

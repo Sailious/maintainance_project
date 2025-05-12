@@ -3,24 +3,18 @@
   <mat-toolbar color="primary" class="header-toolbar">
     <div class="nav-group">
       <div class="title-button-group">
-        <button mat-raised-button
-                routerLink="/users"
-                routerLinkActive="active-button">
+        <button mat-raised-button routerLink="/users" routerLinkActive="active-button">
           <mat-icon>people</mat-icon>
-          User Management
+          Users
         </button>
-        <button mat-raised-button
-                routerLink="/posts"
-                routerLinkActive="active-button">
+
+        <button mat-raised-button routerLink="/posts" routerLinkActive="active-button">
           <mat-icon>article</mat-icon>
-          Post Management
+          Posts
         </button>
       </div>
 
-      <button mat-raised-button
-              color="warn"
-              class="logout-button"
-              (click)="onLogout()">
+      <button mat-raised-button color="warn" class="logout-button" (click)="onLogout()">
         <mat-icon>logout</mat-icon>
         Logout
       </button>
@@ -28,7 +22,7 @@
   </mat-toolbar>
 
   <!-- Posts Table -->
-  <div class="table-wrapper mat-elevation-z8">
+  <div class="table-container mat-elevation-z8">
     <table mat-table [dataSource]="posts">
       <!-- Columns -->
       <ng-container matColumnDef="id">
@@ -49,12 +43,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let post">
-          <button mat-icon-button color="primary"
-                  (click)="onViewComments(post.id)">
+          <button mat-icon-button color="primary" (click)="onViewComments(post.id)">
             <mat-icon>comment</mat-icon>
           </button>
-          <button mat-icon-button color="warn"
-                  (click)="onDeletePost(post.id)">
+          <button mat-icon-button color="warn" (click)="onDeletePost(post.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -72,11 +64,8 @@
     </table>
 
     <!-- Pagination -->
-    <mat-paginator [length]="total"
-                   [pageSize]="pageSize"
-                   [pageIndex]="currentPage - 1"
-                   (page)="handlePageEvent($event)"
-                   showFirstLastButtons>
+    <mat-paginator [length]="total" [pageSize]="pageSize" [pageIndex]="currentPage - 1"
+                   (page)="handlePageEvent($event)" showFirstLastButtons>
     </mat-paginator>
   </div>
 
@@ -88,8 +77,7 @@
         <mat-card-title>
           Comments for Post #{{ selectedPostId }}
         </mat-card-title>
-        <button mat-icon-button
-                (click)="selectedPostId = null">
+        <button mat-icon-button (click)="selectedPostId = null">
           <mat-icon>close</mat-icon>
         </button>
       </mat-card-header>
@@ -114,8 +102,7 @@
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let comment">
-              <button mat-icon-button color="warn"
-                      (click)="onDeleteComment(comment.id)">
+              <button mat-icon-button color="warn" (click)="onDeleteComment(comment.id)">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>

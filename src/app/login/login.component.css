@@ -1,15 +1,81 @@
+/* login.component.css */
 .login-container {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 90%; /* 添加响应式宽度 */
+  margin: auto; /* 水平居中 */
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+
+  /* 添加垂直居中定位 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* 动画效果 */
+  animation: slideIn 0.5s ease;
 }
 
-.form-group {
-  margin-bottom: 16px;
-  width: 100%;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
+/* 标题居中 */
+h2 {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+/* 表单元素对齐 */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 子元素水平居中 */
+}
+
+.mat-form-field {
+  width: 100%; /* 输入框填满容器 */
+}
+
+/* 按钮样式优化 */
 .full-width-button {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 1.5rem;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.full-width-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+
+/* 注册按钮特殊样式 */
+button[color="accent"] {
+  background: #ff4081;
+  color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 600px) {
+  .login-container {
+    padding: 1.5rem;
+    width: 85%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
 }

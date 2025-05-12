@@ -82,7 +82,7 @@ export class PostManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this post?')) {
       this.postService.deletePost(postId).subscribe({
         next: () => {
-          alert('Post deleted successfully');
+          alert('Post deleted successfully');//TODO: 把alert改成弹窗
           this.loadPosts();
         },
         error: (error) => this.handleError(error)
@@ -95,7 +95,7 @@ export class PostManagementComponent implements OnInit {
     if (confirm('Are you sure you want to delete this comment?')) {
       this.postService.deleteComment(commentId).subscribe({
         next: () => {
-          alert('Comment deleted successfully');
+          alert('Comment deleted successfully');//TODO: 把alert改成弹窗
           if (this.selectedPostId) {
             this.onViewComments(this.selectedPostId);
           }
@@ -117,7 +117,7 @@ export class PostManagementComponent implements OnInit {
       this.loginService.logout();
       this.router.navigate(['/login']);
     } else {
-      alert('Operation failed: ' + (error.error?.message || 'Unknown error'));
+      alert('Operation failed: ' + (error.error?.message || 'Unknown error'));//TODO: 把alert改成弹窗
     }
   }
 }

@@ -1,15 +1,67 @@
+/* register.component.css */
 .register-container {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 90%;
+  margin: auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: slideIn 0.5s ease;
 }
 
-.form-group {
-  margin-bottom: 16px;
+h2 {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mat-form-field {
   width: 100%;
 }
 
 .full-width-button {
   width: 100%;
-  margin-top: 16px;
+  margin-top: 1.5rem;
+  padding: 12px 0;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+button[color="accent"] {
+  background: #ff4081;
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .register-container {
+    padding: 1.5rem;
+    width: 85%;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }

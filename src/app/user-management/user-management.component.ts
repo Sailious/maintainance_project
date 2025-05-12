@@ -82,7 +82,7 @@ export class UserManagementComponent implements OnInit {
   private handleIdSearch(): void {
     const id = Number(this.searchKeyword);
     if (isNaN(id)) {
-      alert('Please enter a valid numeric ID');
+      alert('Please enter a valid numeric ID');//TODO: 把alert改成弹窗
       return;
     }
 
@@ -94,7 +94,7 @@ export class UserManagementComponent implements OnInit {
           this.currentPage = 1;
         } else {
           this.users = [];
-          alert('User not found');
+          alert('User not found');//TODO: 把alert改成弹窗
         }
       },
       error: (error) => this.handleSearchError(error)
@@ -121,7 +121,7 @@ export class UserManagementComponent implements OnInit {
           this.showEditForm = true;
           this.cdr.detectChanges();
         } else {
-          alert('User not found');
+          alert('User not found');//TODO: 把alert改成弹窗
         }
       },
       error: (error) => this.handleSearchError(error)
@@ -138,7 +138,7 @@ export class UserManagementComponent implements OnInit {
       this.editedUser.password
     ).subscribe({
       next: () => {
-        alert('User updated successfully');
+        alert('User updated successfully');//TODO: 把alert改成弹窗
         this.closeEditForm();
         this.loadUsers(this.currentPage);
       },
@@ -151,7 +151,7 @@ export class UserManagementComponent implements OnInit {
 
     this.userManagementService.deleteUser(userId).subscribe({
       next: () => {
-        alert('User deleted successfully');
+        alert('User deleted successfully');//TODO: 把alert改成弹窗
         this.loadUsers(this.currentPage);
       },
       error: (error) => this.handleDeleteError(error)
@@ -175,29 +175,29 @@ export class UserManagementComponent implements OnInit {
     if (error.status === 401) {
       this.router.navigate(['/login']);
     } else {
-      alert('Failed to load data');
+      alert('Failed to load data');//TODO: 把alert改成弹窗
     }
   }
 
   private handleSearchError(error: any): void {
     console.error('Search error:', error);
-    alert(error.status === 404 ? 'User not found' : 'Search failed');
+    alert(error.status === 404 ? 'User not found' : 'Search failed');//TODO: 把alert改成弹窗
   }
 
   private handleUpdateError(error: any): void {
     console.error('Update error:', error);
-    alert(error.status === 400 ? 'Username/email already exists' : 'Update failed');
+    alert(error.status === 400 ? 'Username/email already exists' : 'Update failed');//TODO: 把alert改成弹窗
   }
 
   private handleDeleteError(error: any): void {
     console.error('Delete error:', error);
-    alert('Delete failed: ' + (error.error?.message || 'Unknown error'));
+    alert('Delete failed: ' + (error.error?.message || 'Unknown error'));//TODO: 把alert改成弹窗
   }
 
   // 表单验证
   private validateUserForm(user: User): boolean {
     if (!user.username.trim() || !user.email.trim()) {
-      alert('Username and email are required');
+      alert('Username and email are required');//TODO: 把alert改成弹窗
       return false;
     }
     return true;
