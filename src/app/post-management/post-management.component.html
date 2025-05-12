@@ -1,66 +1,130 @@
 <!-- post-management.component.html -->
 <div class="management-container">
-  <div class="header-section">
-    <h2>帖子管理</h2>
-    <button class="logout-button" (click)="onLogout()">退出登录</button>
-  </div>
+  <mat-toolbar color="primary" class="header-toolbar">
+    <div class="nav-group">
+      <div class="title-button-group">
+        <button mat-raised-button
+                routerLink="/users"
+                routerLinkActive="active-button">
+          <mat-icon>people</mat-icon>
+          User Management
+        </button>
+        <button mat-raised-button
+                routerLink="/posts"
+                routerLinkActive="active-button">
+          <mat-icon>article</mat-icon>
+          Post Management
+        </button>
+      </div>
 
-  <!-- 帖子表格 -->
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>内容</th>
-      <th>创建时间</th>
-      <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let post of posts">
-      <td>{{ post.id }}</td>
-      <td>{{ post.content | truncate:50 }}</td>
-      <td>{{ post.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
-      <td>
-        <button (click)="onViewComments(post.id)">查看评论</button>
-        <button (click)="onDeletePost(post.id)">删除</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!-- 分页 -->
-  <div class="pagination">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">上一页</button>
-    <span>{{ currentPage }}/{{ totalPages }}</span>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">下一页</button>
-  </div>
-
-  <!-- 评论弹窗 -->
-  <div class="modal" *ngIf="selectedPostId">
-    <div class="modal-content">
-      <h3>帖子#{{ selectedPostId }}的评论</h3>
-      <button class="close" (click)="selectedPostId = null">×</button>
-
-      <table>
-        <thead>
-        <tr>
-          <th>用户</th>
-          <th>内容</th>
-          <th>时间</th>
-          <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let comment of comments">
-          <td>{{ comment.username }}</td>
-          <td>{{ comment.content }}</td>
-          <td>{{ comment.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
-          <td>
-            <button (click)="onDeleteComment(comment.id)">删除</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <button mat-raised-button
+              color="warn"
+              class="logout-button"
+              (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
     </div>
+  </mat-toolbar>
+
+  <!-- Posts Table -->
+  <div class="table-wrapper mat-elevation-z8">
+    <table mat-table [dataSource]="posts">
+      <!-- Columns -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let post">{{ post.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="content">
+        <th mat-header-cell *matHeaderCellDef>Content</th>
+        <td mat-cell *matCellDef="let post">{{ post.content | truncate:50 }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef>Created At</th>
+        <td mat-cell *matCellDef="let post">{{ post.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let post">
+          <button mat-icon-button color="primary"
+                  (click)="onViewComments(post.id)">
+            <mat-icon>comment</mat-icon>
+          </button>
+          <button mat-icon-button color="warn"
+                  (click)="onDeletePost(post.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Empty State -->
+      <tr class="mat-row" *matNoDataRow>
+        <td colspan="4" class="text-center py-8">
+          No posts found
+        </td>
+      </tr>
+    </table>
+
+    <!-- Pagination -->
+    <mat-paginator [length]="total"
+                   [pageSize]="pageSize"
+                   [pageIndex]="currentPage - 1"
+                   (page)="handlePageEvent($event)"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+  <!-- Comments Dialog -->
+  <div class="comment-dialog" *ngIf="selectedPostId">
+    <div class="dialog-overlay" (click)="selectedPostId = null"></div>
+    <mat-card class="dialog-content">
+      <mat-card-header>
+        <mat-card-title>
+          Comments for Post #{{ selectedPostId }}
+        </mat-card-title>
+        <button mat-icon-button
+                (click)="selectedPostId = null">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+
+      <mat-card-content>
+        <table mat-table [dataSource]="comments">
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>User</th>
+            <td mat-cell *matCellDef="let comment">{{ comment.username }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef>Content</th>
+            <td mat-cell *matCellDef="let comment">{{ comment.content }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="created_at">
+            <th mat-header-cell *matHeaderCellDef>Time</th>
+            <td mat-cell *matCellDef="let comment">{{ comment.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let comment">
+              <button mat-icon-button color="warn"
+                      (click)="onDeleteComment(comment.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="commentColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: commentColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
