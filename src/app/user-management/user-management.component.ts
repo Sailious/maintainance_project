@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { UserManagementService } from '../services/user-management.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
 
