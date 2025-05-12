@@ -1,123 +1,163 @@
-<div class="user-management-container">
-  <div class="header-section">
-    <h2>User Management</h2>
+<!-- user-management.component.html -->
+<div class="management-container">
+  <!-- 顶部工具栏 -->
+  <mat-toolbar color="primary" class="header-toolbar">
+    <div class="nav-group">
+      <div class="title-button-group">
+        <button mat-raised-button
+                routerLink="/users"
+                routerLinkActive="active-button">
+          <mat-icon>people</mat-icon>
+          Users
+        </button>
 
-    <!-- 退出按钮 -->
-    <div class="logout-section">
-      <button class="logout-button" (click)="onLogout()">Logout</button>
+        <button mat-raised-button
+                routerLink="/posts"
+                routerLinkActive="active-button">
+          <mat-icon>article</mat-icon>
+          Posts
+        </button>
+      </div>
+
+      <button mat-raised-button
+              color="warn"
+              class="logout-button"
+              (click)="onLogout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
     </div>
-  </div>
+  </mat-toolbar>
 
   <!-- 搜索栏 -->
   <div class="search-container">
-    <select [(ngModel)]="searchType">
-      <option value="keyword">Keyword Search</option>
-      <option value="id">ID Search</option>
-    </select>
+    <mat-form-field appearance="fill">
+      <mat-label>Search Type</mat-label>
+      <mat-select [(value)]="searchType">
+        <mat-option value="keyword">Keyword</mat-option>
+        <mat-option value="id">ID Search</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <input
-      type="text"
-      [(ngModel)]="searchKeyword"
-      [placeholder]="searchType === 'id' ? 'Enter User ID...' : 'Search by username/email...'"
-    >
-    <button (click)="onSearch()">Search</button>
+    <mat-form-field appearance="fill" class="search-field">
+      <mat-label>{{ searchType === 'id' ? 'User ID' : 'Search users...' }}</mat-label>
+      <input matInput
+             type="text"
+             [(ngModel)]="searchKeyword"
+             (keyup.enter)="onSearch()">
+    </mat-form-field>
+
+    <button mat-flat-button
+            color="primary"
+            (click)="onSearch()"
+            class="search-button">
+      <mat-icon>search</mat-icon>
+      Search
+    </button>
   </div>
 
   <!-- 用户表格 -->
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Username</th>
-      <th>Email</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.id }}</td>
-      <td>{{ user.username }}</td>
-      <td>{{ user.email }}</td>
-      <td>
-        <button (click)="onEdit(user.id)">Edit</button>
-        <button (click)="onDelete(user.id)">Delete</button>
-      </td>
-    </tr>
-    <tr *ngIf="users.length === 0">
-      <td colspan="4" style="text-align: center">No users found</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="users" class="mat-elevation-z8">
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let user">{{ user.id }}</td>
+      </ng-container>
 
-  <!-- 分页 (仅显示在关键词搜索模式) -->
-  <div class="pagination" *ngIf="searchType === 'keyword'">
-    <button
-      (click)="previousPage()"
-      [disabled]="currentPage === 1"
-    >Previous</button>
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+      </ng-container>
 
-    <span>{{ currentPage }} / {{ totalPages }}</span>
+      <!-- Email Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
 
-    <button
-      (click)="nextPage()"
-      [disabled]="currentPage === totalPages"
-    >Next</button>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-icon-button color="primary" (click)="onEdit(user.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(user.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="['id', 'username', 'email', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['id', 'username', 'email', 'actions'];"></tr>
+
+      <!-- Empty State -->
+      <tr class="no-data-row" *matNoDataRow>
+        <td colspan="4">
+          <div class="empty-state">
+            <mat-icon>group_off</mat-icon>
+            No users found
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- 分页 -->
+    <!-- 修正后的分页代码 -->
+    <!-- 修改后的分页器 -->
+    <mat-paginator [length]="total"
+                   [pageSize]="10"
+                   [pageIndex]="currentPage - 1"
+                   [pageSizeOptions]="[10]"
+                   [hidePageSize]="true"
+                   (page)="handlePageEvent($event)"
+                   *ngIf="searchType === 'keyword'"
+                   showFirstLastButtons
+                   aria-label="Select page">
+    </mat-paginator>
   </div>
 
-  <!-- 编辑用户表单遮罩 -->
-  <div
-    class="edit-user-form-backdrop"
-    *ngIf="showEditForm"
-    (click)="closeEditForm()"
-  ></div>
+  <!-- 编辑对话框 -->
+  <div class="edit-dialog" *ngIf="showEditForm">
+    <div class="dialog-overlay" (click)="closeEditForm()"></div>
+    <mat-card class="dialog-content">
+      <mat-card-header>
+        <mat-card-title>Edit User</mat-card-title>
+      </mat-card-header>
 
-  <!-- 编辑用户表单 -->
-  <div class="edit-user-form" *ngIf="showEditForm">
-    <h3>Edit User</h3>
-    <form (ngSubmit)="onUpdateUser(editedUser.id)">
-      <div class="form-group">
-        <label>ID</label>
-        <input
-          type="text"
-          [(ngModel)]="editedUser.id"
-          name="id"
-          disabled
-        >
-      </div>
+      <mat-card-content>
+        <form (ngSubmit)="onUpdateUser(editedUser.id)">
+          <mat-form-field appearance="fill">
+            <mat-label>ID</mat-label>
+            <input matInput [(ngModel)]="editedUser.id" name="id" disabled>
+          </mat-form-field>
 
-      <div class="form-group">
-        <label>Username</label>
-        <input
-          type="text"
-          [(ngModel)]="editedUser.username"
-          name="username"
-          required
-        >
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput [(ngModel)]="editedUser.username" name="username" required>
+          </mat-form-field>
 
-      <div class="form-group">
-        <label>Email</label>
-        <input
-          type="email"
-          [(ngModel)]="editedUser.email"
-          name="email"
-          required
-        >
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="editedUser.email" name="email" required>
+          </mat-form-field>
 
-      <div class="form-group">
-        <label>Password (leave blank to keep unchanged)</label>
-        <input
-          type="password"
-          [(ngModel)]="editedUser.password"
-          name="password"
-        >
-      </div>
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password"
+                   [(ngModel)]="editedUser.password"
+                   name="password"
+                   placeholder="Keep empty to remain unchanged">
+          </mat-form-field>
 
-      <div class="form-actions">
-        <button type="submit">Update User</button>
-        <button type="button" (click)="closeEditForm()">Cancel</button>
-      </div>
-    </form>
+          <div class="dialog-actions">
+            <button mat-button type="button" (click)="closeEditForm()">Cancel</button>
+            <button mat-raised-button color="primary" type="submit">Update</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

@@ -1,0 +1,66 @@
+<!-- post-management.component.html -->
+<div class="management-container">
+  <div class="header-section">
+    <h2>帖子管理</h2>
+    <button class="logout-button" (click)="onLogout()">退出登录</button>
+  </div>
+
+  <!-- 帖子表格 -->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>内容</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let post of posts">
+      <td>{{ post.id }}</td>
+      <td>{{ post.content | truncate:50 }}</td>
+      <td>{{ post.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>
+        <button (click)="onViewComments(post.id)">查看评论</button>
+        <button (click)="onDeletePost(post.id)">删除</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- 分页 -->
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">上一页</button>
+    <span>{{ currentPage }}/{{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">下一页</button>
+  </div>
+
+  <!-- 评论弹窗 -->
+  <div class="modal" *ngIf="selectedPostId">
+    <div class="modal-content">
+      <h3>帖子#{{ selectedPostId }}的评论</h3>
+      <button class="close" (click)="selectedPostId = null">×</button>
+
+      <table>
+        <thead>
+        <tr>
+          <th>用户</th>
+          <th>内容</th>
+          <th>时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let comment of comments">
+          <td>{{ comment.username }}</td>
+          <td>{{ comment.content }}</td>
+          <td>{{ comment.created_at | date:'yyyy-MM-dd HH:mm' }}</td>
+          <td>
+            <button (click)="onDeleteComment(comment.id)">删除</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

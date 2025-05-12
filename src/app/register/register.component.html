@@ -1,0 +1,29 @@
+<div class="register-container">
+  <h2>Administrator Registration</h2>
+  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Username</mat-label>
+      <input matInput id="username" placeholder="Username" [(ngModel)]="username" name="username" required>
+      <mat-error *ngIf="!username">Username is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Email</mat-label>
+      <input matInput id="email" placeholder="Email" [(ngModel)]="email" name="email" required email>
+      <mat-error *ngIf="!email">Email is required</mat-error>
+      <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">Invalid email format</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password" required minlength="6">
+      <mat-error *ngIf="!password">Password is required</mat-error>
+      <mat-error *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">Password must be at least 6 characters long</mat-error>
+    </mat-form-field>
+
+    <button type="submit" mat-flat-button color="primary" class="full-width-button" [disabled]="!registerForm.valid">Register</button>
+  </form>
+
+  <!-- 添加跳转到登录页面的按钮 -->
+  <button mat-flat-button color="accent" class="full-width-button" (click)="navigateToLogin()">Back to Login</button>
+</div>

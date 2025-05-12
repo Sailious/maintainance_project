@@ -1,5 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { UserManagementService } from '../services/user-management.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
 
@@ -13,6 +15,7 @@ interface User {
 
 interface PaginationResponse {
   users: User[];
+  total: number;      // 添加total字段
   totalPages: number;
 }
 
@@ -24,6 +27,7 @@ interface PaginationResponse {
 export class UserManagementComponent implements OnInit {
   // 用户列表和分页
   users: User[] = [];
+  total = 0;
   currentPage = 1;
   totalPages = 1;
 
@@ -53,11 +57,12 @@ export class UserManagementComponent implements OnInit {
     this.loadUsers(this.currentPage);
   }
 
-  // 加载用户列表
+
   loadUsers(page: number): void {
     this.userManagementService.getUsers(page).subscribe({
       next: (response: PaginationResponse) => {
         this.users = response.users;
+        this.total = response.total;       // 使用正确的total字段
         this.totalPages = response.totalPages;
         this.currentPage = page;
       },
@@ -199,6 +204,13 @@ export class UserManagementComponent implements OnInit {
   }
 
   // 分页控制
+
+  // 修改分页事件处理
+  handlePageEvent(event: PageEvent) {
+    this.currentPage = event.pageIndex + 1; // 保持与后端一致的页码
+    this.loadUsers(this.currentPage);
+  }
+
   previousPage(): void {
     if (this.currentPage > 1) {
       this.loadUsers(this.currentPage - 1);
