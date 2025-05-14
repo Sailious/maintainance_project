@@ -27,6 +27,12 @@ form {
   align-items: center;
 }
 
+.form-group {
+  min-width: 110px;
+  max-width: 280px;
+  width: 100%;
+}
+
 .mat-form-field {
   width: 100%;
 }

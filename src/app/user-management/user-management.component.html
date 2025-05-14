@@ -40,7 +40,7 @@
     </div>
   </mat-toolbar>
 
-  <!-- 搜索栏 -->
+  <!-- 搜索框 -->
   <div class="search-container">
     <mat-form-field appearance="fill">
       <mat-label>Search Type</mat-label>
@@ -140,10 +140,10 @@
 
       <mat-card-content>
         <form (ngSubmit)="onUpdateUser(editedUser.id)">
-          <mat-form-field appearance="fill">
-            <mat-label>ID</mat-label>
-            <input matInput [(ngModel)]="editedUser.id" name="id" disabled>
-          </mat-form-field>
+<!--          <mat-form-field appearance="fill">-->
+<!--            <mat-label>ID</mat-label>-->
+<!--            <input matInput [(ngModel)]="editedUser.id" name="id" disabled>-->
+<!--          </mat-form-field>-->
 
           <mat-form-field appearance="fill">
             <mat-label>Username</mat-label>

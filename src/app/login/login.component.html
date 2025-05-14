@@ -1,18 +1,22 @@
 <div class="login-container">
   <h2>Administrator Login</h2>
-  <form (ngSubmit)="onLogin()">
-    <mat-form-field appearance="fill" class="form-group">
+  <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+    <mat-form-field appearance="outline" class="form-group">
       <mat-label>Email</mat-label>
-      <input matInput id="email" placeholder="Email" [(ngModel)]="email" name="email" required>
+      <input matInput type="email" name="email" [(ngModel)]="email" required email #emailInput="ngModel" autocomplete="email">
+      <mat-error *ngIf="emailInput.invalid && emailInput.touched">
+        <span *ngIf="emailInput.errors?.['required']">Email address cannot be empty</span>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Password</mat-label>
-      <input matInput type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password"
-             required>
+      <input matInput type="password" id="password" placeholder="Password" [(ngModel)]="password" name="password" required #passwordInput="ngModel">
+      <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+        <span *ngIf="passwordInput.errors?.['required']">Password cannot be empty</span>
+      </mat-error>
     </mat-form-field>
 
-    <button type="submit" mat-flat-button color="primary" class="full-width-button">Login</button>
+    <button type="submit" mat-flat-button color="primary" class="full-width-button" [disabled]="!loginForm.valid">Login</button>
   </form>
-
 </div>

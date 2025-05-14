@@ -29,6 +29,12 @@
   }
 }
 
+.form-group {
+  min-width: 110px;
+  max-width: 280px;
+  width: 100%;
+}
+
 /* 标题居中 */
 h2 {
   text-align: center;
@@ -62,11 +68,6 @@ form {
   box-shadow: 0 3px 6px rgba(0,0,0,0.16);
 }
 
-/* 注册按钮特殊样式 */
-button[color="accent"] {
-  background: #ff4081;
-  color: white;
-}
 
 /* 响应式设计 */
 @media (max-width: 600px) {

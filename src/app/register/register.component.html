@@ -1,31 +1,47 @@
-<!-- register.component.html -->
 <div class="register-container">
   <h2>Create New Account</h2>
-  <form (ngSubmit)="onRegister()">
+  <form (ngSubmit)="onRegister()" #registerForm="ngForm">
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="username" name="username" required>
+      <input matInput [(ngModel)]="username" name="username" required #usernameInput="ngModel">
+      <mat-error *ngIf="usernameInput.invalid && usernameInput.touched">
+        <span *ngIf="usernameInput.errors?.['required']">Username cannot be empty</span>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Email</mat-label>
-      <input matInput type="email" [(ngModel)]="email" name="email" required>
+      <input matInput type="email" [(ngModel)]="email" name="email" required email #emailInput="ngModel">
+      <mat-error *ngIf="emailInput.invalid && emailInput.touched">
+        <span *ngIf="emailInput.errors?.['required']">Email address cannot be empty</span>
+        <span *ngIf="emailInput.errors?.['email']">Invalid email format</span>
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="form-group">
       <mat-label>Password</mat-label>
-      <input matInput type="password" [(ngModel)]="password" name="password" required>
+      <input matInput type="password" [(ngModel)]="password" name="password"  #passwordInput="ngModel">
+      <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">
+        <span *ngIf="passwordInput.errors?.['required']">Password cannot be empty</span>
+      </mat-error>
     </mat-form-field>
 
-    <button type="submit" mat-flat-button color="primary" class="full-width-button">
+    <mat-form-field appearance="fill" class="form-group">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" required
+             [pattern]="password" #confirmPasswordInput="ngModel">
+      <mat-error *ngIf="confirmPasswordInput.invalid && confirmPasswordInput.touched">
+        <span *ngIf="confirmPasswordInput.errors?.['required']">Please confirm your password</span>
+        <span *ngIf="confirmPasswordInput.errors?.['pattern']">Passwords do not match</span>
+      </mat-error>
+    </mat-form-field>
+
+    <button type="submit" mat-flat-button color="primary" class="full-width-button" [disabled]="!registerForm.valid">
       Register
     </button>
   </form>
 
-  <button mat-flat-button
-          color="basic"
-          class="back-button"
-          (click)="goBack()">
+  <button mat-flat-button color="basic" class="back-button" (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
     Back
   </button>

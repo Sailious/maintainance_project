@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterSuccessDialogComponent } from '../components/register-success-dialog/register-success-dialog.component';
+import { RegisterErrorDialogComponent } from '../components/register-error-dialog/register-error-dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ export class RegisterComponent {
   email = '';
   password = '';
   private previousUrl: string;
+  confirmPassword: any;
 
 
   constructor(
@@ -40,20 +42,33 @@ export class RegisterComponent {
             this.router.navigate(['/login']);
           });
         },
-        error: (error) => {//TODO: 把alert改成弹窗
-          // 保持原有错误处理
-          console.error('Registration failed:', error);
+        error: (error) => {
+          let errorMessage = 'Registration failed, please try again later';
+
+          // 细化错误提示
           if (error.status === 400) {
-            alert('Username or email already exists');
-          } else if (error.status === 500) {
-            alert('Server error');
-          } else {
-            alert('Registration failed');
+            errorMessage = error.error?.error === 'Username Exists'
+                ? 'Username already exists'
+                : error.error?.error === 'Email Exists'
+                    ? 'Email already exists'
+                    : 'Other error occurred';
+          }else if (error.status === 500) {
+            errorMessage = 'Internal server error, please contact the administrator';
           }
+
+          this.dialog.open(RegisterErrorDialogComponent, {
+            width: '400px',
+            data: { message: errorMessage },
+            disableClose: true
+          });
         }
       });
     } else {
-      alert('Please fill in all fields');
+      this.dialog.open(RegisterErrorDialogComponent, {
+        width: '400px',
+        data: { message: 'Please fill in all required fields' },
+        disableClose: true
+      });
     }
   }
 
@@ -61,7 +76,7 @@ export class RegisterComponent {
     if (this.previousUrl) {
       this.router.navigateByUrl(this.previousUrl);
     } else {
-      this.location.back(); // 备用方案
+      this.location.back();
     }
   }
 

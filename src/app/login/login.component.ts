@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { LoginSuccessDialogComponent } from '../components/login-success-dialog/login-success-dialog.component';
+import { LoginErrorDialogComponent } from '../components/login-error-dialog/login-error-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -40,11 +41,30 @@ export class LoginComponent {
           });
         },
         error: (error) => {
-          // 错误处理保持不变
+          let errorMessage = 'Login failed, please try again later';
+
+          // 根据错误类型细化提示
+          if (error.status === 401) {
+            errorMessage = 'Incorrect email or password';
+          } else if (error.status === 500) {
+            errorMessage = 'Internal server error, please contact the administrator';
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+
+          this.dialog.open(LoginErrorDialogComponent, {
+            width: '400px',
+            data: { message: errorMessage },
+            disableClose: true
+          });
         }
       });
     } else {
-      alert('Please enter both email and password');//TODO: 把alert改成弹窗
+      this.dialog.open(LoginErrorDialogComponent, {
+        width: '400px',
+        data: { message: '请输入邮箱和密码' },
+        disableClose: true
+      });
     }
   }
 
