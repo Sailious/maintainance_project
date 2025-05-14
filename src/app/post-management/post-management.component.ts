@@ -1,9 +1,9 @@
 // post-management.component.ts
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
-import { LoginService } from '../services/login.service';
-import { PostManagementService } from '../services/post-management.service';
+import {Component, OnInit} from '@angular/core';
+import {PageEvent} from '@angular/material/paginator';
+import {NavigationExtras, Router} from '@angular/router';
+import {LoginService} from '../services/login.service';
+import {PostManagementService} from '../services/post-management.service';
 
 interface PaginationResponse {
   posts: any[];
@@ -44,10 +44,18 @@ export class PostManagementComponent implements OnInit {
     private postService: PostManagementService,
     private router: Router,
     private loginService: LoginService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.loadPosts();
+  }
+
+  navigateToRegister() {
+    const navigationExtras: NavigationExtras = {
+      state: {from: this.router.url} // 携带当前URL
+    };
+    this.router.navigate(['/admin/register'], navigationExtras);
   }
 
   // Load posts
@@ -106,8 +114,13 @@ export class PostManagementComponent implements OnInit {
   }
 
   // Handle logout
-  onLogout(): void {
-    this.loginService.logout();
+  onLogout() {
+    // 清除本地存储
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+
+    // 跳转至登录页
     this.router.navigate(['/login']);
   }
 

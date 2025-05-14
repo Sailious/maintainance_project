@@ -44,6 +44,32 @@ button[color="accent"] {
   color: white;
 }
 
+/* register.component.css */
+.back-button {
+  position: absolute;
+  top: 12px;    /* 微调上边距 */
+  left: 12px;   /* 微调左边距 */
+  padding: 4px 8px !important;  /* 减小内边距 */
+  min-width: auto !important;    /* 取消最小宽度限制 */
+
+  /* 文字和图标调整 */
+  font-size: 0.875rem;          /* 14px */
+  line-height: 1.25rem;         /* 保持垂直居中 */
+
+  /* 图标尺寸调整 */
+  .mat-icon {
+    width: 18px;                /* 图标宽度 */
+    height: 18px;               /* 图标高度 */
+    font-size: 18px;            /* 图标字号 */
+    margin-right: 4px;          /* 图标右边距 */
+  }
+
+  /* 悬停微调 */
+  &:hover {
+    transform: translateX(-2px); /* 减小悬移动画幅度 */
+  }
+}
+
 @media (max-width: 600px) {
   .register-container {
     padding: 1.5rem;

@@ -154,6 +154,52 @@ mat-card-header > button[mat-icon-button]:hover {
   }
 }
 
+/* 与用户管理页面保持一致的样式 */
+.nav-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 1.5rem;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .nav-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-button {
+    width: 48%;
+    justify-content: center;
+  }
+}
 
 /* 响应式适配 */
 @media (max-width: 768px) {

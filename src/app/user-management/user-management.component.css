@@ -13,7 +13,7 @@
 .header-toolbar {
   border-radius: 12px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .nav-group {
@@ -40,13 +40,13 @@
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
-  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2),
-  0 8px 10px 1px rgba(0,0,0,.14),
-  0 3px 14px 2px rgba(0,0,0,.12);
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, .2),
+  0 8px 10px 1px rgba(0, 0, 0, .14),
+  0 3px 14px 2px rgba(0, 0, 0, .12);
 }
 
 /* 空状态 */
-.empty-row  td {
+.empty-row td {
   padding: 40px 0 !important;
   text-align: center;
 }
@@ -56,7 +56,7 @@
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  color: rgba(0,0,0,.54);
+  color: rgba(0, 0, 0, .54);
 }
 
 .empty-state mat-icon {
@@ -82,7 +82,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .dialog-content {
@@ -93,7 +93,7 @@
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* 操作按钮容器 */
@@ -116,7 +116,7 @@
 /* 悬停效果增强 */
 .dialog-actions button:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* 移动端适配 */
@@ -129,6 +129,26 @@
     width: 100%;
     order: initial !important; /* 移动端恢复默认顺序 */
   }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto; /* 推到最右侧 */
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 1.5rem;
+  border-radius: 24px;
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
 }
 
 /* 响应式适配 */

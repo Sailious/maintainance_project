@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { UserManagementService } from '../services/user-management.service';
-import { Router } from '@angular/router';
+import {NavigationExtras, Router} from '@angular/router';
 import { LoginService } from '../services/login.service';
 
 interface User {
@@ -51,6 +51,13 @@ export class UserManagementComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) { }
+
+  navigateToRegister() {
+    const navigationExtras: NavigationExtras = {
+      state: { from: this.router.url } // 携带当前URL
+    };
+    this.router.navigate(['/admin/register'], navigationExtras);
+  }
 
   ngOnInit(): void {
     this.loadUsers(this.currentPage);
@@ -157,8 +164,12 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  onLogout(): void {
-    this.loginService.logout();
+  onLogout() {
+    // 清除本地存储
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    // 跳转至登录页
     this.router.navigate(['/login']);
   }
 

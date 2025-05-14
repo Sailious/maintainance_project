@@ -18,13 +18,25 @@
         </button>
       </div>
 
-      <button mat-raised-button
-              color="warn"
-              class="logout-button"
-              (click)="onLogout()">
-        <mat-icon>logout</mat-icon>
-        Logout
-      </button>
+      <div class="action-buttons">
+        <!-- 新增注册按钮 -->
+        <button mat-raised-button
+                color="accent"
+                class="nav-button"
+                routerLink="/admin/register">
+          <mat-icon>person_add</mat-icon>
+          Register
+        </button>
+
+        <!-- 原有退出按钮 -->
+        <button mat-raised-button
+                color="warn"
+                class="nav-button"
+                (click)="onLogout()">
+          <mat-icon>logout</mat-icon>
+          Logout
+        </button>
+      </div>
     </div>
   </mat-toolbar>
 
