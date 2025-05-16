@@ -12,23 +12,22 @@
           <mat-icon>article</mat-icon>
           Posts
         </button>
+
+        <button mat-raised-button routerLink="/songs" routerLinkActive="active-button">
+          <mat-icon>music_note</mat-icon>
+          Songs
+        </button>
       </div>
 
       <div class="action-buttons">
         <!-- 新增注册按钮 -->
-        <button mat-raised-button
-                color="accent"
-                class="nav-button"
-                routerLink="/admin/register">
+        <button mat-raised-button color="accent" class="nav-button" routerLink="/admin/register">
           <mat-icon>person_add</mat-icon>
-          Register
+          Administrator Register
         </button>
 
         <!-- 原有退出按钮 -->
-        <button mat-raised-button
-                color="warn"
-                class="nav-button"
-                (click)="onLogout()">
+        <button mat-raised-button color="warn" class="nav-button" (click)="onLogout()">
           <mat-icon>logout</mat-icon>
           Logout
         </button>
@@ -79,8 +78,8 @@
     </table>
 
     <!-- Pagination -->
-    <mat-paginator [length]="total" [pageSize]="pageSize" [pageIndex]="currentPage - 1"
-                   (page)="handlePageEvent($event)" showFirstLastButtons>
+    <mat-paginator [length]="total" [pageSize]="pageSize" [pageIndex]="currentPage - 1" (page)="handlePageEvent($event)"
+      showFirstLastButtons>
     </mat-paginator>
   </div>
 

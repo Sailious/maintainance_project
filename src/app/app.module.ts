@@ -34,6 +34,8 @@ import {LoginSuccessDialogComponent} from './components/login-success-dialog/log
 import {RegisterSuccessDialogComponent} from './components/register-success-dialog/register-success-dialog.component';
 import {LoginErrorDialogComponent} from './components/login-error-dialog/login-error-dialog.component';
 import { RegisterErrorDialogComponent } from './components/register-error-dialog/register-error-dialog.component';
+import { SongManagementComponent } from './song-management/song-management.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { RegisterErrorDialogComponent } from './components/register-error-dialog
     LoginErrorDialogComponent,
     RegisterSuccessDialogComponent,
     RegisterErrorDialogComponent,
+    SongManagementComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     // Angular 核心模块

@@ -1,18 +1,15 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {UserManagementComponent} from './user-management/user-management.component';
-import {RegisterComponent} from './register/register.component';
-import {PostManagementComponent} from "./post-management/post-management.component";
-import {AuthGuard} from "./ auth.guard";
-
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './login/login.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { RegisterComponent } from './register/register.component';
+import { PostManagementComponent } from "./post-management/post-management.component";
+import { SongManagementComponent } from "./song-management/song-management.component";
+import { AuthGuard } from "./ auth.guard";
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: 'full'},
-  {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent},
-  // {path: 'users', component: UserManagementComponent},
-  // {path: 'posts', component: PostManagementComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'admin/register',
     component: RegisterComponent,
@@ -21,14 +18,19 @@ const routes: Routes = [
   {
     path: 'users',
     component: UserManagementComponent,
-    data: {title: 'User Management'}
+    data: { title: 'User Management' }
   },
   {
     path: 'posts',
     component: PostManagementComponent,
-    data: {title: 'Posts Management'}
+    data: { title: 'Posts Management' }
   },
-  {path: '', redirectTo: '/users', pathMatch: 'full'}
+  {
+    path: 'songs',
+    component: SongManagementComponent,
+    data: { title: 'Songs Management' }
+  },
+  { path: '', redirectTo: '/users', pathMatch: 'full' }
 ];
 
 @NgModule({

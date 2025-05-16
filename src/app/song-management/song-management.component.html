@@ -1,0 +1,136 @@
+<!-- song-management.component.html -->
+<div class="management-container">
+    <mat-toolbar color="primary" class="header-toolbar">
+        <div class="nav-group">
+            <div class="title-button-group">
+                <button mat-raised-button routerLink="/users" routerLinkActive="active-button">
+                    <mat-icon>people</mat-icon>
+                    Users
+                </button>
+
+                <button mat-raised-button routerLink="/posts" routerLinkActive="active-button">
+                    <mat-icon>article</mat-icon>
+                    Posts
+                </button>
+                <button mat-raised-button routerLink="/songs" routerLinkActive="active-button" class="active-button">
+                    <mat-icon>music_note</mat-icon>
+                    Song
+                </button>
+            </div>
+
+            <div class="action-buttons">
+                <!-- 修改按钮点击事件为showCreateDialog() -->
+                <button mat-raised-button color="primary" (click)="showCreateDialog()">
+                    <mat-icon>add</mat-icon>
+                    New Song
+                </button>
+            </div>
+        </div>
+    </mat-toolbar>
+
+    <!-- 搜索框 -->
+    <div class="search-container">
+        <mat-form-field appearance="fill">
+            <mat-label>Search Type</mat-label>
+            <mat-select [(value)]="searchType">
+                <mat-option value="keyword">Keyword</mat-option>
+                <mat-option value="id">ID Search</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="search-field">
+            <mat-label>{{ searchType === 'id' ? 'Song ID' : 'Search songs...' }}</mat-label>
+            <input matInput type="text" [(ngModel)]="keyword" (keyup.enter)="searchSongs()">
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="searchSongs()" class="search-button">
+            <mat-icon>search</mat-icon>
+            Search
+        </button>
+    </div>
+
+    <!-- 歌曲表格 -->
+    <div class="table-container">
+        <table mat-table [dataSource]="songs" class="mat-elevation-z8">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>ID</th>
+                <td mat-cell *matCellDef="let song">{{ song.id }}</td>
+            </ng-container>
+
+            <!-- Title Column -->
+            <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef>Title</th>
+                <td mat-cell *matCellDef="let song">{{ song.title }}</td>
+            </ng-container>
+
+            <!-- Artist Column -->
+            <ng-container matColumnDef="artist">
+                <th mat-header-cell *matHeaderCellDef>Artist</th>
+                <td mat-cell *matCellDef="let song">{{ song.artist }}</td>
+            </ng-container>
+
+            <!-- Actions Column -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let song">
+                    <button mat-icon-button color="primary" (click)="editSong(song)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteSong(song.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['id', 'title', 'artist', 'actions']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['id', 'title', 'artist', 'actions'];"></tr>
+
+            <!-- Empty State -->
+            <tr class="empty-row " *matNoDataRow>
+                <td colspan="4">
+                    <div class="empty-state">
+                        <mat-icon>music_off</mat-icon>
+                        No songs found
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- 编辑对话框 -->
+    <div class="edit-dialog" *ngIf="currentSong">
+        <div class="dialog-overlay" (click)="clearForm()"></div>
+        <mat-card class="dialog-content">
+            <mat-card-header>
+                <mat-card-title>{{ currentSong ? 'Edit Song' : 'New Song' }}</mat-card-title>
+            </mat-card-header>
+
+            <mat-card-content>
+                <form (ngSubmit)="currentSong ? updateSong() : createSong()">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Title</mat-label>
+                        <input matInput [(ngModel)]="title" name="title" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Artist</mat-label>
+                        <input matInput [(ngModel)]="artist" name="artist" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Lyrics</mat-label>
+                        <textarea matInput [(ngModel)]="lyrics" name="lyrics" rows="5"></textarea>
+                    </mat-form-field>
+
+                    <div class="dialog-actions">
+                        <button mat-button type="button" (click)="clearForm()">Cancel</button>
+                        <button mat-raised-button color="primary" type="submit">
+                            {{ currentSong ? 'Update' : 'Create' }}
+                        </button>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
