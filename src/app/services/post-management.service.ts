@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PostManagementService {
-  private apiBaseUrl = 'http://frp-fit.com:56647/api/admin';
+  private apiBaseUrl = 'https://api.hf2e2bc54.nyat.app:56647/api/admin';
 
   constructor(private http: HttpClient) { }
 

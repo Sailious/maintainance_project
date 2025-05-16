@@ -9,7 +9,7 @@ export class UserManagementService {
 
   constructor(private http: HttpClient) { }
 
-  private apiBaseUrl = 'http://frp-fit.com:56647/api/admin'; // 后端 API 的基础 URL
+  private apiBaseUrl = 'https://api.hf2e2bc54.nyat.app:56647/api/admin'; // 后端 API 的基础 URL
 
   // 分页获取用户列表
   getUsers(page: number = 1): Observable<any> {
