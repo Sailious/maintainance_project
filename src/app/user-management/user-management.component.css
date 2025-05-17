@@ -38,7 +38,8 @@
 .search-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* 调整元素之间的间距 */
+  gap: 10px;
+  /* 调整元素之间的间距 */
 }
 
 .search-container mat-form-field:first-child {
@@ -118,8 +119,8 @@
 .dialog-actions {
   display: flex;
   gap: 8px;
-  justify-content: flex-end; /* 确保从右向左排列 */
-  width: 100%; /* 关键属性 */
+  justify-content: flex-end;
+  width: 100%;
 }
 
 /* 调整按钮顺序 */

@@ -20,9 +20,14 @@
 
             <div class="action-buttons">
                 <!-- 修改按钮点击事件为showCreateDialog() -->
-                <button mat-raised-button color="primary" (click)="showCreateDialog()">
+                <button mat-raised-button color="accent" class="nav-button" (click)="showCreateDialog()">
                     <mat-icon>add</mat-icon>
                     New Song
+                </button>
+                <!-- 原有退出按钮 -->
+                <button mat-raised-button color="warn" class="nav-button" (click)="onLogout()">
+                    <mat-icon>logout</mat-icon>
+                    Logout
                 </button>
             </div>
         </div>

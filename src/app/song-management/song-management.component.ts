@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SongService } from '../services/song.service';
+import { Router } from '@angular/router'; // 新增：导入路由模块
 
 interface LyricsLine {
   text: string;
@@ -26,7 +27,11 @@ export class SongManagementComponent {
   lyricsText: string = '';  // 用于textarea的字符串绑定
   searchType: string = '';
 
-  constructor(private songService: SongService, private dialog: MatDialog) { }
+  constructor(
+    private songService: SongService, 
+    private dialog: MatDialog,
+    private router: Router // 新增：注入路由服务
+  ) { }
 
   ngOnInit(): void {
     this.getSongs();
@@ -130,5 +135,12 @@ export class SongManagementComponent {
       console.error('解析歌词JSON失败', error);
       return [];  // 解析失败时返回空数组
     }
+  }
+
+  // 新增：退出登录方法
+  onLogout(): void {
+    // 示例逻辑：跳转到登录页（根据项目实际需求调整）
+    this.router.navigate(['/login']); 
+    // 如果有认证服务，可在此调用退出逻辑（如：this.authService.logout()）
   }
 }
