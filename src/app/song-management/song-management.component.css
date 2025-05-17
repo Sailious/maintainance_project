@@ -209,3 +209,10 @@
     content: 'music_off';
     /* 匹配歌曲管理的空状态图标 */
 }
+
+.full-width {
+    width: 100%;
+    /* 让输入框占满父容器宽度 */
+    margin-bottom: 16px;
+    /* 增加底部间距 */
+}

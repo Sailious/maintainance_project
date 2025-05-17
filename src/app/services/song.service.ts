@@ -2,11 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+interface LyricsLine {
+  text: string;
+  chord: string;
+}
+
+interface LyricsSection {
+  line: LyricsLine[];
+}
+
 interface Song {
   id: number;
   title: string;
   artist: string;
-  lyrics?: any[];
+  lyrics?: LyricsSection[];  // 修正：明确歌词为LyricsSection数组
 }
 
 @Injectable({ providedIn: 'root' })
@@ -27,8 +36,14 @@ export class SongService {
     return this.http.post<Song[]>(`${this.apiUrl}/songs/search`, { keyword });
   }
 
-  getLyrics(id: number): Observable<Song[]> {
-    return this.http.get<Song[]>(`${this.apiUrl}/lyrics/${id}`);
+  // 修改前：返回 Song[]
+  // getLyrics(id: number): Observable<Song[]> {
+  //   return this.http.get<Song[]>(`${this.apiUrl}/lyrics/${id}`);
+  // }
+
+  // 修改后：返回单个 Song 对象
+  getLyrics(id: number): Observable<Song> {
+    return this.http.get<Song>(`${this.apiUrl}/lyrics/${id}`);
   }
 
   createSong(title: string, artist: string, lyrics: any[]): Observable<{ id: number; message: string }> {

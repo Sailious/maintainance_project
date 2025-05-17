@@ -1,7 +1,15 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SongService } from '../services/song.service';
-import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dialog.component';
+
+interface LyricsLine {
+  text: string;
+  chord: string;
+}
+
+interface LyricsSection {
+  line: LyricsLine[];
+}
 
 @Component({
   selector: 'app-song-management',
@@ -10,11 +18,12 @@ import { ConfirmDialogComponent } from '../components/confirm-dialog/confirm-dia
 })
 export class SongManagementComponent {
   songs: any[] = [];
-  currentSong: any = null;
+  currentSong: any = undefined;
   keyword: string = '';
   title: string = '';
   artist: string = '';
-  lyrics: any[] = [];
+  lyrics: LyricsSection[] = [];
+  lyricsText: string = '';  // 用于textarea的字符串绑定
   searchType: string = '';
 
   constructor(private songService: SongService, private dialog: MatDialog) { }
@@ -38,27 +47,30 @@ export class SongManagementComponent {
     );
   }
 
-  // 添加显示创建对话框的方法
   showCreateDialog(): void {
-    this.currentSong = {}; // 设置为非null以触发弹窗
-    this.title = '';       // 重置表单字段
+    this.currentSong = null;
+    this.title = '';
     this.artist = '';
     this.lyrics = [];
+    this.lyricsText = '';  // 新建时清空文本
   }
 
-  // 保持原createSong方法不变，用于表单提交时实际创建歌曲
+  // 合并重复的createSong方法（仅保留一个）
   createSong(): void {
+    this.lyrics = this.parseLyricsText(this.lyricsText);  // 提交前解析文本
     this.songService.createSong(this.title, this.artist, this.lyrics).subscribe(
       (result) => {
         this.getSongs();
-        this.clearForm(); // 提交成功后关闭弹窗
+        this.clearForm();
       },
       (error) => console.error('创建歌曲失败', error)
     );
   }
 
+  // 合并重复的updateSong方法（仅保留一个）
   updateSong(): void {
     if (!this.currentSong) return;
+    this.lyrics = this.parseLyricsText(this.lyricsText);  // 提交前解析文本
     this.songService.updateSong(this.currentSong.id, this.title, this.artist, this.lyrics).subscribe(
       (result) => {
         this.getSongs();
@@ -69,32 +81,49 @@ export class SongManagementComponent {
   }
 
   deleteSong(id: number): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { message: '确认删除该歌曲吗？' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.songService.deleteSong(id).subscribe(
-          (result) => this.getSongs(),
-          (error) => console.error('删除歌曲失败', error)
-        );
-      }
-    });
+    if (window.confirm('确认删除该歌曲吗？')) {
+      this.songService.deleteSong(id).subscribe(
+        (result) => this.getSongs(),
+        (error) => console.error('删除歌曲失败', error)
+      );
+    }
   }
 
   editSong(song: any): void {
     this.currentSong = song;
     this.title = song.title;
     this.artist = song.artist;
-    this.lyrics = song.lyrics;
+    this.songService.getLyrics(song.id).subscribe(
+      (songWithLyrics) => {
+        this.lyrics = songWithLyrics.lyrics || [];
+        this.lyricsText = this.getLyricsText(this.lyrics);  // 将对象转为文本显示
+      },
+      (error) => console.error('获取歌词失败', error)
+    );
   }
 
   clearForm(): void {
-    this.currentSong = null;
+    this.currentSong = undefined;
     this.title = '';
     this.artist = '';
     this.lyrics = [];
+    this.lyricsText = '';
     this.keyword = '';
+  }
+
+  // 新增：将歌词对象转为文本的方法
+  // 修改：将歌词对象转为格式化的JSON字符串
+  getLyricsText(lyrics: LyricsSection[]): string {
+    return JSON.stringify(lyrics, null, 2);  // 第二个参数为null（不过滤），第三个参数为2（缩进空格数）
+  }
+
+  // 修改：将文本解析为歌词对象（直接解析JSON）
+  parseLyricsText(text: string): LyricsSection[] {
+    try {
+      return JSON.parse(text);  // 直接解析用户输入的JSON字符串
+    } catch (error) {
+      console.error('解析歌词JSON失败', error);
+      return [];  // 解析失败时返回空数组
+    }
   }
 }

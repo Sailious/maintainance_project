@@ -99,7 +99,7 @@
     </div>
 
     <!-- 编辑对话框 -->
-    <div class="edit-dialog" *ngIf="currentSong">
+    <div class="edit-dialog" *ngIf="currentSong !== undefined"> <!-- 修改条件：当 currentSong 不为 undefined 时显示 -->
         <div class="dialog-overlay" (click)="clearForm()"></div>
         <mat-card class="dialog-content">
             <mat-card-header>
@@ -108,19 +108,20 @@
 
             <mat-card-content>
                 <form (ngSubmit)="currentSong ? updateSong() : createSong()">
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Title</mat-label>
                         <input matInput [(ngModel)]="title" name="title" required>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Artist</mat-label>
                         <input matInput [(ngModel)]="artist" name="artist" required>
                     </mat-form-field>
 
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Lyrics</mat-label>
-                        <textarea matInput [(ngModel)]="lyrics" name="lyrics" rows="5"></textarea>
+                        <textarea matInput [(ngModel)]="lyricsText" name="lyrics" rows="5"></textarea>
+                        <!-- 修改：绑定中间变量 -->
                     </mat-form-field>
 
                     <div class="dialog-actions">
