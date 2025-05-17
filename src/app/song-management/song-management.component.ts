@@ -94,9 +94,14 @@ export class SongManagementComponent {
     this.title = song.title;
     this.artist = song.artist;
     this.songService.getLyrics(song.id).subscribe(
-      (songWithLyrics) => {
-        this.lyrics = songWithLyrics.lyrics || [];
-        this.lyricsText = this.getLyricsText(this.lyrics);  // 将对象转为文本显示
+      (response) => {
+        if (Array.isArray(response) && response.length > 0) {
+          this.lyrics = response[0].lyrics || [];
+          this.lyricsText = this.getLyricsText(this.lyrics);
+        } else {
+          this.lyrics = [];
+          this.lyricsText = '';
+        }
       },
       (error) => console.error('获取歌词失败', error)
     );
