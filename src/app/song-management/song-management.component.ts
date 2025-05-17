@@ -28,7 +28,7 @@ export class SongManagementComponent {
   searchType: string = '';
 
   constructor(
-    private songService: SongService, 
+    private songService: SongService,
     private dialog: MatDialog,
     private router: Router // 新增：注入路由服务
   ) { }
@@ -98,15 +98,21 @@ export class SongManagementComponent {
     this.currentSong = song;
     this.title = song.title;
     this.artist = song.artist;
+
     this.songService.getLyrics(song.id).subscribe(
       (response) => {
+        // 处理API返回的数组结构
+        // 假设 response 是一个数组,且元素类型为 Song，这里需要先判断数组是否有元素
+        let songData;
         if (Array.isArray(response) && response.length > 0) {
-          this.lyrics = response[0].lyrics || [];
-          this.lyricsText = this.getLyricsText(this.lyrics);
+          songData = response[0];
         } else {
-          this.lyrics = [];
-          this.lyricsText = '';
+          songData = undefined;
         }
+        this.lyrics = songData?.lyrics || [];
+
+        // 使用自定义序列化
+        this.lyricsText = this.getLyricsText(this.lyrics);
       },
       (error) => console.error('获取歌词失败', error)
     );
@@ -124,23 +130,27 @@ export class SongManagementComponent {
   // 新增：将歌词对象转为文本的方法
   // 修改：将歌词对象转为格式化的JSON字符串
   getLyricsText(lyrics: LyricsSection[]): string {
-    return JSON.stringify(lyrics, null, 2);  // 第二个参数为null（不过滤），第三个参数为2（缩进空格数）
+    // 使用JSON.stringify生成标准JSON（带缩进）
+    return JSON.stringify(lyrics, null, 2);
   }
 
-  // 修改：将文本解析为歌词对象（直接解析JSON）
+
+  // 将用户输入的类JS对象格式转为合法JSON
+  // 将用户输入的JSON文本转为LyricsSection数组
   parseLyricsText(text: string): LyricsSection[] {
     try {
-      return JSON.parse(text);  // 直接解析用户输入的JSON字符串
+      // 直接解析标准JSON（无需正则替换）
+      return JSON.parse(text);
     } catch (error) {
-      console.error('解析歌词JSON失败', error);
-      return [];  // 解析失败时返回空数组
+      console.error('解析歌词失败', error);
+      return [];
     }
   }
 
   // 新增：退出登录方法
   onLogout(): void {
     // 示例逻辑：跳转到登录页（根据项目实际需求调整）
-    this.router.navigate(['/login']); 
+    this.router.navigate(['/login']);
     // 如果有认证服务，可在此调用退出逻辑（如：this.authService.logout()）
   }
 }
