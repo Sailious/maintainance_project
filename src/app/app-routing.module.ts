@@ -9,7 +9,11 @@ import { AuthGuard } from "./ auth.guard";
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { 
+    path: 'register', 
+    component: RegisterComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'admin/register',
     component: RegisterComponent,
@@ -18,16 +22,19 @@ const routes: Routes = [
   {
     path: 'users',
     component: UserManagementComponent,
+    canActivate: [AuthGuard],
     data: { title: 'User Management' }
   },
   {
     path: 'posts',
     component: PostManagementComponent,
+    canActivate: [AuthGuard],
     data: { title: 'Posts Management' }
   },
   {
     path: 'songs',
     component: SongManagementComponent,
+    canActivate: [AuthGuard],
     data: { title: 'Songs Management' }
   },
   { path: '', redirectTo: '/users', pathMatch: 'full' }
